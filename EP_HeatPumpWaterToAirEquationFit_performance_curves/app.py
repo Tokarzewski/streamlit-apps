@@ -1,5 +1,10 @@
 import streamlit as st
 
+st.set_page_config(
+    page_title="EP WAHP",
+    layout="wide"
+)
+
 c1, c2, c3 = st.columns(3)
 with c1:
     # Rated capacities
