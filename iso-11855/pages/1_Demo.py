@@ -48,11 +48,11 @@ with c3:
     )
 
     st.write("Case of application: ", UFH.case_of_application)
-    st.write("Heat flux: ", round(UFH.q, 1), "W/m2")
     st.write("Thermal transfer resistance: ", round(UFH.alfa, 2), "m²K/W")
     st.write(
         "Temperature difference between heating fluid and room: ",
         round(UFH.deltat_H, 2),
         "K",
     )
+    st.write("Heat flux: ", round(UFH.q, 1), "W/m2")
     st.write("Equivalent heat transmission coefficient: ", round(UFH.K_H, 2), "W/m²K")
