@@ -4,4 +4,4 @@ Quick start, in terminal type:
 
   pip install streamlit
   
-  streamlit run WAHP.py 
+  streamlit run app.py 
