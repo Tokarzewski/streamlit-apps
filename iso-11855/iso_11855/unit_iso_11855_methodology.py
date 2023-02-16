@@ -34,6 +34,6 @@ for UFH in [UFH_A, UFH_B, UFH_D]:
 
 """
 System A: 88.12 W/m2
-System B: 91.41 W/m2
+System B: 93.92 W/m2
 System D: 99.86 W/m2
 """
