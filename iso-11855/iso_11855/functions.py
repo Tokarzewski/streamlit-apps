@@ -189,7 +189,7 @@ def q_G3(a_WL, a_WL_W, q_G_W):
 
 def B1(B_0, a_i, m_i, W, k_R, d_a, s_R):
     """
-    Function A.26 - Influence of material and thickness factor without sheating.
+    Function A.26 - Influence of material and thickness factor without sheathing.
     Arguments:
     B_0 - default influence factor depending on the system type,
     W - pipe spacing
@@ -207,14 +207,14 @@ def B1(B_0, a_i, m_i, W, k_R, d_a, s_R):
 
 def B2(B_0, a_i, m_i, W, k_R, d_a, s_R, k_M, d_M):
     """
-    Function A.27 - Influence of material and thickness factor with sheating.
+    Function A.27 - Influence of material and thickness factor with sheathing.
     Arguments:
     B_0 - default influence factor depending on the system type,
     W - pipe spacing
     k_R - pipe material,
     s_R - pipe wall thickness,
-    k_M - sheating material,
-    d_M - sheating thickness.
+    k_M - sheathing material,
+    d_M - sheathing thickness.
     """
     k_R_0 = 0.35
     s_R_0 = 0.002
@@ -585,7 +585,7 @@ def n_G3(K_WL, W):
 
 def alfa(case_of_application="floor heating"):
     """
-    Table A.20 - Additional thermal transfer resistance.
+    Table A.20 - Heat transfer coefficient [W/m2K]
     XYZ This function should not be used for calculating q.
     """
     switcher = {

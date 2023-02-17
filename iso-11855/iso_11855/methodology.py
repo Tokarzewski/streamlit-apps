@@ -19,9 +19,9 @@ class EmbeddedRadiantSystem:
     case_of_application: str = 'floor heating'
     W: float = 0.10 # Pipe spacing [m]
 
-    #sheating
-    d_M: float = 0.017  # External diameter of sheating [m]
-    k_M: float = 1.0  # Sheating material conductivity [W/mK]
+    #Sheathing
+    d_M: float = 0.016  # External diameter of sheathing [m]
+    k_M: float = 1.0  # Sheathing material conductivity [W/mK]
 
     # heat diffusion device - only for system B
     s_WL: float = 0.002  # Thickness of the heat conducting material [m]
@@ -33,9 +33,9 @@ class EmbeddedRadiantSystem:
     R_k_B: float = 0.05  # Thermal resistance of the floor covering [m2K/W]
     k_E: float = 1.8  # Thermal conductivity of screed [W/mK]
     
-    # studs
-    psi: float = 0.05  # Volume ratio of the attachement studs in the screed
-    k_W: float = 0.5  # Thermal conductivity of the attachements studs [W/mK]
+    # fixing inserts
+    psi: float = 0.05  # Volume ratio of the fixing inserts in the screed
+    k_W: float = 0.5  # Thermal conductivity of the fixing inserts [W/mK]
 
     # temperatures
     t_i: float = 20.0  # Design indoor temperature [*C]

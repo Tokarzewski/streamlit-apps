@@ -17,7 +17,7 @@ with c1:
                         value=45, step=1, format="%i") / 1000
     R_k_B = st.number_input("Thermal resistance of the floor covering [m2K/W]", 
                         value=0.10, step=0.05, format="%f")
-    k_E = st.number_input("Thermal resistance of the floor covering [m2K/W]", 
+    k_E = st.number_input("Thermal conductivity of screed [W/mK]", 
                         value=1.8, step=0.1, format="%f")
 
 
@@ -41,21 +41,20 @@ with c2:
                                     external_diameter=4, wall_thickness=0.5, conductivity=1)
 
     if system_type in "ACHIJ":
-        # studs
-        st.write("#### Studs")
-        psi = st.number_input("Volume ratio of the attachement studs in the screed", 
+        st.write("#### Fixing inserts")
+        psi = st.number_input("Volume ratio of the fixing inserts in the screed [-]", 
         value=0.05, step=0.01, format="%f")
-        k_W = st.number_input("Thermal conductivity of the attachements studs [W/mK]", 
+        k_W = st.number_input("Thermal conductivity of the fixing inserts [W/mK]", 
         value=0.50, step=0.05, format="%f")
     else:
         psi = 0
         k_W = 0
 
     if system_type != "D":
-        st.write("#### Sheating")
-        d_M = st.number_input("External diameter of sheating [mm]", 
-                                value=17.0, step=0.1, format="%f") /1000
-        k_M = st.number_input("Sheating material conductivity [W/mK]", 
+        st.write("#### Sheathing")
+        d_M = st.number_input("External diameter of sheathing [mm]", 
+                                value=16.0, step=0.1, format="%f") / 1000
+        k_M = st.number_input("Sheathing material conductivity [W/mK]", 
                                 value = 1.0, step=0.5, format="%f")
     else:
         d_M = 0
@@ -106,7 +105,7 @@ with c3:
 
     st.write("#### Results")
     st.write("Case of application:", UFH.case_of_application)
-    st.write("Thermal transfer resistance:", round(UFH.alfa, 2), "m²K/W")
+    st.write("Heat transfer coefficient:", round(UFH.alfa, 1), "W/m²K")
     st.write("Temperature difference between heating fluid and room:",
         round(UFH.deltat_H, 2),"K",)
     st.write("Equivalent heat transmission coefficient:", round(UFH.K_H, 2), "W/m²K")
