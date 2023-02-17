@@ -98,7 +98,7 @@ class EmbeddedRadiantSystem:
                 B_0=self.B_0,
                 a_i=a_i,
                 m_i=m_i,
-                W=self.W,
+                W=0.375,
                 k_R=self.embedded_pipe.conductivity,
                 d_a=self.embedded_pipe.external_diameter,
                 s_R=self.embedded_pipe.wall_thickness,
