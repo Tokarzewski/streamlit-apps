@@ -4,22 +4,18 @@ from scipy.interpolate import CubicSpline, interp2d, interpn
 
 
 def q1(t_S_m, t_i):
-    """Function 1 - Heat flux for floor heating and ceiling cooling."""
     return 8.92 * (t_S_m - t_i) ^ 1.1
 
 
 def q2(t_S_m, t_i):
-    """Function 2 - Heat flux for wall heating and cooling."""
     return 8 * abs(t_S_m - t_i)
 
 
 def q3(t_S_m, t_i):
-    """Function 3 - Heat flux for ceiling heating."""
     return 6 * abs(t_S_m - t_i)
 
 
 def q4(t_S_m, t_i):
-    """Function 4 - Heat flux for floor cooling."""
     return 7 * abs(t_S_m - t_i)
 
 
@@ -28,12 +24,10 @@ def power_product(a_i, m_i) -> float:
 
 
 def q5(B, a_i, m_i, deltat_H):
-    """Function 5 - Universal single power heat flux function."""
     return B * power_product(a_i, m_i) * deltat_H
 
 
 def q_des(h_t, t_S_m, t_i):
-    """Function 6 - Heat flux for heating and cooling."""
     return h_t * abs(t_S_m - t_i)
 
 
@@ -41,8 +35,6 @@ def q_des(h_t, t_S_m, t_i):
 
 
 def deltat_H(t_V, t_R, t_i):
-    """Function A.1 - Temperature difference
-    between heating fluid and room."""
     return (t_V - t_R) / log((t_V - t_i) / (t_R - t_i))
 
 
@@ -50,63 +42,52 @@ def deltat_H(t_V, t_R, t_i):
 
 
 def q6(a_B, a_W, a_U, a_D, m_W, m_U, m_D, deltat_H, B=6.7):
-    """Function A.3 - Heat flux for system types A, C, H, I, J."""
     a_i = [a_B, a_W, a_U, a_D]
     m_i = [1, m_W, m_U, m_D]
     return q5(B, a_i, m_i, deltat_H)
 
 
 def a_B1(alfa, k_E, R_k_B):
-    """Function A.4 - Surface covering factor for system types A, C, H, I, J."""
     s_u_0 = 0.045
     k_u_0 = 1
     return (1 / alfa + s_u_0 / k_u_0) / (1 / alfa + s_u_0 / k_E + R_k_B)
 
 
 def m_W(W):
-    """Function A.5 - Exponent m_W for system types A, B, C, H, I, J."""
     return 1 - W / 0.075
 
 
 def m_U(s_u):
-    """Function A.6 - Exponent m_U."""
     return 100 * (0.045 - s_u)
 
 
 def m_D(D):
-    """Function A.7 - Exponent m_D."""
     return 250 * (D - 0.02)
 
 
 def K_H1(a_i, m_i, s_u, s_u_star, lambda_E):
-    """Function A.8 - Heat transfer coefficient."""
     return 1 / (1 / power_product(a_i, m_i) + (s_u - s_u_star) / lambda_E)
 
 
 def q7(K_H, deltat_H):
-    """Function A.9 - Heat flux."""
     return K_H * deltat_H
 
 
 def q8(q_0375, W):
-    """Function A.10 - Heat flux for pipe spacing W > 0.375 m for system types A, C, H, I, J."""
     return q_0375 * 0.375 / W
 
 
 def q9(a_B, a_W, a_U, a_WL, a_K, m_W, deltat_H, B=6.5):
-    """Function A.11 - Heat flux for system type B."""
     a_i = [a_B, a_W, a_U, a_WL, a_K]
     m_i = [1, m_W, 1, 1, 1]
     return q5(B, a_i, m_i, deltat_H)
 
 
 def a_B2(a_U, a_W, m_W, a_WL, a_K, R_k_B, W, B=6.5):
-    """Function A.12 - Surface covering factor for system type B."""
     return 1 / (1 + B * a_U * a_W**m_W * a_WL * a_K * R_k_B * (1 + 0.44 * sqrt(W)))
 
 
 def a_U2(alfa, s_u, k_E):
-    """Function A.13 - Covering factor for system types B and D."""
     s_u_0 = 0.045
     k_u_o = 1
     return (1 / alfa + s_u_0 / k_u_o) / (1 / alfa + s_u / k_E)
@@ -116,26 +97,15 @@ def a_U2(alfa, s_u, k_E):
 
 
 def K_WL(s_WL, k_WL, b_u, s_u, k_E):
-    """
-    Function A.15 - Characteristic value for heat conducting device.
-    Arguments:
-    s_WL - thickness of the heat conducting material,
-    k_WL - thermal conductivity of the heat conducting material,
-    b_u - correction factor depending on the pipe spacing from table A.17,
-    s_u - thickness of the screed,
-    k_E - thermal conductivity of the screed.
-    """
     return (s_WL * k_WL + b_u * s_u * k_E) * 8
 
 
 def a_WL1(a_WL, a_0, L_WL, W):
-    """Function A.16 - Corrected heat conduction device factor for system type B."""
     x = L_WL / W
     return a_WL - (a_WL - a_0) * (1 - 3.2 * x + 3.4 * x * x - 1.2 * x * x * x)
 
 
 def q10(a_B, a_U, deltat_H, B=6.5):
-    """Function A.17 - Heat flux for system type D."""
     a_i = [a_B, 1.06, a_U]
     m_i = [1, 1, 1]
     return q5(B, a_i, m_i, deltat_H)
@@ -143,38 +113,31 @@ def q10(a_B, a_U, deltat_H, B=6.5):
 
 
 def a_B3(a_U, R_k_B):
-    """Function A.18 - Surface covering factor for system type D."""
     B = 6.5
     return 1 / (1 + B * a_U * 1.06 * R_k_B)
 
 
 def q_G1(fi, B_G, deltat_H, n_G):
-    """Function A.19 - Limit curve of heat flux."""
     return fi * B_G * (deltat_H / fi) ** n_G
 
 
 def fi(t_F_max, t_i, deltat_o=9):
-    """Function A.20 - Factor for conversion to any values."""
     return ((t_F_max - t_i) / deltat_o) ** 1.1
 
 
 def deltat_H_G(fi, B_G, B, a_i, m_i, n_G):
-    """Function A.21 - The intersection of the characteristic curve with the limit curve."""
     return fi * (B_G / (B * power_product(a_i, m_i))) ** (1 / (1 - n_G))
 
 
 def q_G2(q_G_0375, W, f_G):
-    """Function A.22 - Limit curve of heat flux for type A and C system types where W > 0.375 m."""
     return q_G_0375 * 0.375 / W * f_G
 
 
 def deltat_H_G(t_H_G_0375, f_G):
-    """Function A.23 - The limit tempertature difference between the heating medium and the room."""
     return t_H_G_0375 * f_G
 
 
 def f_G(s_u, W, q_G_max, q_G_0375):
-    """Function A.24 -"""
     if s_u / W > 0.173:
         x = q_G_0375 * 0.375 / W
         return (q_G_max - (q_G_max - x) * e ** (-20 * (s_u / W - 0.173) ** 2)) / x
@@ -183,19 +146,10 @@ def f_G(s_u, W, q_G_max, q_G_0375):
 
 
 def q_G3(a_WL, a_WL_W, q_G_W):
-    """Function A.25 - Correction formula for system type B."""
     return a_WL / a_WL_W * q_G_W
 
 
 def B1(B_0, a_i, m_i, W, k_R, d_a, s_R):
-    """
-    Function A.26 - Influence of material and thickness factor without sheathing.
-    Arguments:
-    B_0 - default influence factor depending on the system type,
-    W - pipe spacing
-    k_R - pipe material,
-    s_R - pipe wall thickness.
-    """
     k_R_0 = 0.35
     s_R_0 = 0.002
     x = 1 / B_0 + 1.1 / pi * power_product(a_i, m_i) * W * (
@@ -206,16 +160,6 @@ def B1(B_0, a_i, m_i, W, k_R, d_a, s_R):
 
 
 def B2(B_0, a_i, m_i, W, k_R, d_a, s_R, k_M, d_M):
-    """
-    Function A.27 - Influence of material and thickness factor with sheathing.
-    Arguments:
-    B_0 - default influence factor depending on the system type,
-    W - pipe spacing
-    k_R - pipe material,
-    s_R - pipe wall thickness,
-    k_M - sheathing material,
-    d_M - sheathing thickness.
-    """
     k_R_0 = 0.35
     s_R_0 = 0.002
     x = 1 / B_0 + 1.1 / pi * power_product(a_i, m_i) * W * (
@@ -227,34 +171,26 @@ def B2(B_0, a_i, m_i, W, k_R, d_a, s_R, k_M, d_M):
 
 
 def k_E_prim(psi, k_E, k_W):
-    """Function A.28 - Thermal conductivity of screed with fixing inserts."""
     return (1 - psi) * k_E + psi * k_W
 
 
 def q_U1(R_u, R_o, q, t_i, t_u):
-    """Function A.29 - Downward heat loss."""
     return 1 / R_u * (R_o * q + t_i - t_u)
 
 
 def R_o(R_k_B, s_u, k_u, alfa=10.8):
-    """Function A.30 - Upwards partial heat transmission
-    resistance of the floor structure."""
     return 1 / alfa + R_k_B + s_u / k_u
 
 
 def R_u(R_k_ins, R_k_construction, R_k_plaster, R_alfa):
-    """Function A.31 - Downwards partial heat transmission
-    resistance of the floor structure."""
     return R_k_ins + R_k_construction + R_k_plaster + R_alfa
 
 
 def q_U2(q, R_o, R_u):
-    """Function A.32 - Downward heat loss when t_i == t_u."""
     return q * R_o / R_u
 
 
 def K_H2(K_H_Floor, deltaR_alfa, R_k_B, K_H_Floor_star, R_k_B_star=0.15):
-    """Function A.33 - Equivalent heat transmission coefficient."""
     return K_H_Floor / (
         1 + ((deltaR_alfa + R_k_B) / R_k_B_star) * (K_H_Floor / K_H_Floor_star - 1)
     )
@@ -264,31 +200,17 @@ def K_H2(K_H_Floor, deltaR_alfa, R_k_B, K_H_Floor_star, R_k_B_star=0.15):
 
 
 def deltaR_h(alfa):
-    """Function A.35 - Additional thermal transfer resistance."""
     return 1 / alfa - 1 / 10.8
 
 
 def a_W1(R_k_B):
-    """Table A.2 - Pipe spacing factor for system types A, C, H, I, J."""
     x_R_k_B = [0.0, 0.05, 0.1, 0.15]
     y_a_W = [1.23, 1.188, 1.156, 1.134]
     cs = CubicSpline(x_R_k_B, y_a_W)
-
-    """
-    import matplotlib.pyplot as plt
-    import numpy as np
-    xs = np.arange(0, 0.15, 0.01)
-    fig, ax = plt.subplots(figsize=(6, 4))
-    ax.plot(xs, cs(xs), label="CubicSpline")
-    ax.legend(loc='lower left', ncol=2)
-    plt.show()
-    """
     return cs(R_k_B)
 
 
 def a_U1(R_k_B, W):
-    """Table A.3 - Covering factor for system types A, C, H, I, J."""
-
     x_R_k_B = [0.0, 0.05, 0.1, 0.15]
     y_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375]
     z_a_U = [
@@ -306,8 +228,6 @@ def a_U1(R_k_B, W):
 
 
 def a_D(R_k_B, W):
-    """Table A.4 - Pipe external diameter factor for system types A, C, H, I, J."""
-
     x_R_k_B = [0.0, 0.05, 0.1, 0.15]
     y_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375]
     z_a_D = [
@@ -325,8 +245,6 @@ def a_D(R_k_B, W):
 
 
 def B_G1(s_u, k_E, W):
-    """Table A.5 - Coefficient for s_u/k <= 0.792 for system types A, C, H, I, J."""
-
     x_s_u_k_E = [0.01, 0.0208, 0.0292, 0.0375, 0.0458, 0.0542, 0.0625, 0.0708, 0.0792]
     y_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375]
     z_B_G = [
@@ -344,7 +262,6 @@ def B_G1(s_u, k_E, W):
 
 
 def B_G2(s_u, W):
-    """Table A.6 - Coefficient for s_u/k > 0.792 for system types A, C, H, I, J."""
     x = s_u / W
     if x <= 0.7:
         x_s_u_W = [0.173, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7]
@@ -356,8 +273,6 @@ def B_G2(s_u, W):
 
 
 def n_G1(s_u, k_E, W):
-    """Table A.7 - Exponent for s_u/k <= 0.792 for system types A, C, H, I, J."""
-
     x_s_u_k_E = [0.01, 0.0208, 0.0292, 0.0375, 0.0458, 0.0542, 0.0625, 0.0708, 0.0792]
     y_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.2625, 0.3, 0.3375, 0.375]
     z_n_G = [
@@ -377,7 +292,6 @@ def n_G1(s_u, k_E, W):
 
 
 def n_G2(s_u, W):
-    """Table A.8 - Exponent for s_u/k > 0.792 for system types A, C, H, I, J."""
     x = s_u / W
     if x <= 0.7:
         x_s_u_W = [0.173, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7]
@@ -389,7 +303,6 @@ def n_G2(s_u, W):
 
 
 def a_W2(s_u, k_E):
-    """Table A.9 - Pipe spacing factor for system type B."""
     x_s_u_k_E = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1, 0.15, 0.18]
     y_a_W = [1.103, 1.1, 1.097, 1.094, 1.091, 1.088, 1.082, 1.075, 1.064, 1.059]
     cs = CubicSpline(x_s_u_k_E, y_a_W)
@@ -397,7 +310,6 @@ def a_W2(s_u, k_E):
 
 
 def b_u(W):
-    """Table A.10 - Pipe spacing factor for system type B."""
     if W <= 0.1:
         return 1.0
     elif W < 0.45:
@@ -410,7 +322,6 @@ def b_u(W):
 
 
 def a_WL2(K_WL, W, D):
-    """Tables A.11 - A.15 - Heat conduction device factor for system type B."""
     x_K_WL = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5]
     y_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375, 0.45]
     z_D = [0.014, 0.016, 0.018, 0.020, 0.022]
@@ -489,7 +400,6 @@ def a_WL2(K_WL, W, D):
 
 
 def a_WL_inf(W):
-    """Table A.16 - Single column for K_WL = infinity."""
     x_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375, 0.45]
     y_a_WL_inf = [1, 1.01, 1.02, 1.04, 1.06, 1.07, 1.09, 1.1, 1.1]
     cs = CubicSpline(x_W, y_a_WL_inf)
@@ -497,7 +407,6 @@ def a_WL_inf(W):
 
 
 def a_WL3(K_WL, W, D):
-    """Table A.16 - Heat conduction device factor for system type B, K_WL >= 0.5"""
     if K_WL > 1:
         a_WL_KL_inf = a_WL_inf(W)
         a_WL_KL_0 = a_WL2(K_WL=0, W=W, D=D)
@@ -526,7 +435,6 @@ def a_WL3(K_WL, W, D):
 
 
 def a_K(W):
-    """Table A.17 - Correction factor for the contact for system type B."""
     x_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375, 0.45]
     y_a_K = [1.0, 0.99, 0.98, 0.95, 0.92, 0.9, 0.82, 0.72, 0.60]
     cs = CubicSpline(x_W, y_a_K)
@@ -534,7 +442,6 @@ def a_K(W):
 
 
 def B_G3(K_WL, W):
-    """Table A.18 - Coefficient for system type B."""
     x_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375, 0.45]
     y_K_WL = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5]
     z_B_G = [
@@ -559,7 +466,6 @@ def B_G3(K_WL, W):
 
 
 def n_G3(K_WL, W):
-    """Table A.19 - Exponent for system type B."""
     x_W = [0.05, 0.075, 0.1, 0.15, 0.2, 0.225, 0.3, 0.375, 0.45]
     y_K_WL = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5]
     z_n_G = [
@@ -584,10 +490,6 @@ def n_G3(K_WL, W):
 
 
 def alfa(case_of_application="floor heating"):
-    """
-    Table A.20 - Heat transfer coefficient [W/m2K]
-    XYZ This function should not be used for calculating q.
-    """
     switcher = {
         "floor heating": 10.8,
         "wall heating": 8,
@@ -600,88 +502,62 @@ def alfa(case_of_application="floor heating"):
 
 
 def R_t1(R_z, R_w, R_r, R_x):
-    """Function B.1 - Resistance between supply temperature t_v
-    and average temperature of conductive later t_c."""
     return R_z + R_w + R_r + R_x
 
 
 def R_t2(R_w, R_r, R_x, U_1, U_2, m_H_sp, c):
-    """Function B.2 - Resistance between supply temperature t_v
-    and average temperature of conductive later t_c."""
     U = 1 / (U_1 + U_2)
     mc = m_H_sp * c
     return 1 / mc * (1 - exp(-1 / ((R_w + R_r + R_x + U) * mc))) - U
 
 
 def q11(R_1, R_2, R_t, t_1, t_2, t_v):
-    """
-    Function B.3 - Steady state heat flux into the adjacent spaces.
-    """
     return (R_t * (t_2 - t_1) + R_2 * (t_v - t_1)) / (R_1 * R_2 + R_1 * R_t + R_2 * R_t)
 
 
 def q12(R_1, R_2, R_t, t_1, t_2, t_v):
-    """
-    Function B.4 - Steady state heat flux into the adjacent spaces.
-    """
     return (R_t * (t_1 - t_2) + R_1 * (t_v - t_2)) / (R_1 * R_2 + R_1 * R_t + R_2 * R_t)
 
 
 def K_H3(R_w, R_r, R_x, R_i):
-    """Function B.5 - Equivalent heat transmission coefficient for system E and F."""
     return 1 / (R_w + R_r + R_x + R_i)
 
 
 def R_w1(W, d_a, s_r, m_H_sp, l):
-    """Function B.6 - Resistance w for system E."""
     return W**0.13 / 8 * pi * ((d_a - 2 * s_r) / (m_H_sp * l)) ** 0.87
 
 
 def R_r1(W, d_a, s_r, k_r):
-    """Function B.7 - Resistance r of pipe wall for system E."""
     return W * log(d_a / (d_a - 2 * s_r)) / (2 * pi * k_r)
 
 
 def R_x1(W, d_a, k_b):
-    """Function B.8 - Resistance x between pipe outside wall
-    and conductive later for system E."""
     return W * log(W / (pi * d_a)) / (2 * pi * k_b)
 
 
 def U_i(h_i, s_i, k_b):
-    """Function B.9 - Heat transfer coefficient."""
     return 1 / (1 / h_i + s_i / k_b)
 
 
 def R_i(U_i):
-    """Function B.10 - Resistance from function B.9, B.14 or B.15."""
     return 1 / U_i
 
 
 def R_w2(W, k_w, m_H_sp, c):
-    """Function B.11 - Resistance w for system F."""
     return W / (pi * k_w) * (49.03 + 16.68 / pi * m_H_sp * c * W / k_w) ** (-1 / 3)
 
 
 def R_r2(W, d_a, s_r, k_r):
-    """Function B.12 - Resistance r of pipe wall for system F."""
     return W * log(d_a / (d_a - 2 * s_r)) / (2 * pi * k_r)
 
 
 def R_x2(W, d_a, k_l):
-    """Function B.13 - Resistance x between pipe outside wall
-    and conductive later for system F."""
     return W / 3 * (W / (pi * d_a)) / (2 * pi * k_l)
 
 
 def U_1(h_1, s_1, k_b, s_l, k_l):
-    """Function B.14 - Heat transfer coefficient 1 for system F."""
     return 1 / (1 / h_1 + s_1 / k_b + s_l / (2 * k_l))
 
 
 def U_2(h_2, s_l, k_l):
-    """Function B.15 - Heat transfer coefficient 2 for system F."""
     return 1 / (1 / h_2 + s_l / (2 * k_l))
-
-
-# Function B.16 is equal to B.10

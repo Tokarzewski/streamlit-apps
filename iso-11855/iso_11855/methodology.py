@@ -168,7 +168,6 @@ class EmbeddedRadiantSystem:
 
     def __post_init__(self) -> None:
         self.B_0 = self.B_0()
-        # XYZ use ISO 6946 to calculate alfa for calculating q.
         self.alfa = f.alfa(self.case_of_application)
         self.D = max(self.embedded_pipe.external_diameter, self.d_M)
         self.K_H = self.q(self)
