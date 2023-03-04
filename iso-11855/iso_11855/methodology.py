@@ -54,7 +54,7 @@ class EmbeddedRadiantSystem:
         else:
             return "There is no B_0 for system type: ", self.system_type
 
-    def q_ACHIJ(self):
+    def K_H_ACHIJ(self, R_k_b):
         """Heat transfer coefficient for system types A, C, H, I, J."""
 
         if 0.05 <= self.psi <= 0.15:
@@ -62,14 +62,14 @@ class EmbeddedRadiantSystem:
         else:
             k_E = self.k_E
 
-        a_B = f.a_B1(self.alfa, k_E, self.R_k_B)
-        a_W = f.a_W1(self.R_k_B)
+        a_B = f.a_B1(self.floor_alfa, k_E, R_k_b)
+        a_W = f.a_W1(R_k_b)
         m_U = f.m_U(self.s_u)
         m_D = f.m_D(self.D)
 
         if self.W <= 0.375:
-            a_U = f.a_U1(self.R_k_B, self.W)
-            a_D = f.a_D(self.R_k_B, self.W)
+            a_U = f.a_U1(R_k_b, self.W)
+            a_D = f.a_D(R_k_b, self.W)
             m_W = f.m_W(self.W)
 
             a_i = [a_B, a_W, a_U, a_D]
@@ -87,8 +87,8 @@ class EmbeddedRadiantSystem:
             return f.q5(self.B, a_i, m_i, 1)
 
         else:
-            a_U = f.a_U1(self.R_k_B, W=0.375)
-            a_D = f.a_D(self.R_k_B, W=0.375)
+            a_U = f.a_U1(R_k_b, W=0.375)
+            a_D = f.a_D(R_k_b, W=0.375)
             m_W = f.m_W(W=0.375)
 
             a_i = [a_B, a_W, a_U, a_D]
@@ -107,16 +107,16 @@ class EmbeddedRadiantSystem:
 
             return f.q8(q_0375, self.W)
 
-    def q_B(self):
+    def K_H_B(self, R_k_b):
         """Heat transfer coefficient for system type B."""
-        a_U = f.a_U2(self.alfa, self.s_u, self.k_E)
+        a_U = f.a_U2(self.floor_alfa, self.s_u, self.k_E)
         a_W = f.a_W2(self.s_u, self.k_E)
         b_u = f.b_u(self.W)
         a_K = f.a_K(self.W)
         K_WL = f.K_WL(self.s_WL, self.k_WL, b_u, self.s_u, self.k_E)
 
         if 0.05 <= self.W <= 0.45:
-            m_W = f.m_W(self.R_k_B)
+            m_W = f.m_W(R_k_b)
         
         if K_WL < 0.5:
             a_WL = f.a_WL2(K_WL, self.W, self.D)
@@ -127,7 +127,7 @@ class EmbeddedRadiantSystem:
             a_0 = f.a_WL2(0, self.W, self.D)
             a_WL = f.a_WL1(a_WL, a_0, self.L_WL, self.W)
 
-        a_B = f.a_B2(a_U, a_W, m_W, a_WL, a_K, self.R_k_B, self.W)
+        a_B = f.a_B2(a_U, a_W, m_W, a_WL, a_K, R_k_b, self.W)
 
         a_i = [a_B, a_W, a_U, a_WL, a_K]
         m_i = [1, m_W, 1, 1, 1]
@@ -144,10 +144,10 @@ class EmbeddedRadiantSystem:
 
         return f.q5(self.B, a_i, m_i, 1)
 
-    def q_D(self):
+    def K_H_D(self, R_k_b):
         """Heat transfer coefficient for system type D."""
-        a_U = f.a_U2(self.alfa, self.s_u, self.k_E)
-        a_B = f.a_B3(a_U, self.R_k_B)
+        a_U = f.a_U2(self.floor_alfa, self.s_u, self.k_E)
+        a_B = f.a_B3(a_U, R_k_b)
 
         a_i = [a_B, 1.06, a_U]
         m_i = [1, 1, 1]
@@ -156,20 +156,28 @@ class EmbeddedRadiantSystem:
 
         return f.q5(self.B, a_i, m_i, 1)
 
-    def q(self):
+    def calc_K_H_floor(self, R_k_b):
         if self.system_type in "ACHIJ":
-            return self.q_ACHIJ()
+            return self.K_H_ACHIJ(R_k_b)
         elif self.system_type == "B":
-            return self.q_B()
+            return self.K_H_B(R_k_b)
         elif self.system_type == "D":
-            return self.q_D()
+            return self.K_H_D(R_k_b)
         else:
             return "There is no q system type: ", self.system_type
+    
+    def calc_K_H(self):
+        K_H_Floor = self.calc_K_H_floor(R_k_b=0)
+        R_k_b_star = 0.15
+        K_H_Floor_star = self.calc_K_H_floor(R_k_b_star)
+        deltaR_alfa = 1/self.alfa - 1/self.floor_alfa
+        return f.K_H2(K_H_Floor, deltaR_alfa, self.R_k_B, K_H_Floor_star, R_k_b_star)
 
     def __post_init__(self) -> None:
         self.B_0 = self.B_0()
+        self.floor_alfa = f.alfa()
         self.alfa = f.alfa(self.case_of_application)
         self.D = max(self.embedded_pipe.external_diameter, self.d_M)
-        self.K_H = self.q(self)
+        self.K_H = self.calc_K_H()
         self.deltat_H = f.deltat_H(self.t_V, self.t_R, self.t_i)
         self.q = self.K_H * self.deltat_H
