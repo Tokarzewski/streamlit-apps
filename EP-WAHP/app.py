@@ -5,7 +5,7 @@ st.set_page_config(
     layout="wide"
 )
 
-c1, c2, c3 = st.columns(3)
+c1, c2, c3, c4 = st.columns(4)
 with c1:
     # Rated capacities
     Rated_total_cooling_capacity = st.number_input('Rated_total_cooling_capacity', value = 23125.6)
@@ -36,6 +36,8 @@ with c2:
     C3 = st.number_input('Cooling Power Consumption Coefficients 3', value = 3.16734236, format="%f")
     C4 = st.number_input('Cooling Power Consumption Coefficients 4', value = 0.10244637, format="%f")
     C5 = st.number_input('Cooling Power Consumption Coefficients 5', value = -0.038132556, format="%f")
+    
+with c3:    
     # Heating Capacity Coefficients
     E1 = st.number_input('Heating Capacity Coefficients 1', value = -5.50102734, format="%f")
     E2 = st.number_input('Heating Capacity Coefficients 2', value = -0.96688754, format="%f")
@@ -49,7 +51,7 @@ with c2:
     F4 = st.number_input('Heating Power Consumption Coefficient 4', value = -0.050682973, format="%f")
     F5 = st.number_input('Heating Power Consumption Coefficient 5', value = 0.011385145, format="%f")
 
-with c3:
+with c4:
     # Temperatures and flows from the simulation
     Entering_air_wet_bulb_temperature = st.number_input('Entering_air_wet_bulb_temperature', value = 20.54, step=0.1)
     Entering_Water_Temperature = st.number_input('Entering_Water_Temperature', value = 36.26, step=0.1)
