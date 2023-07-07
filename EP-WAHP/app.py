@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="EP WAHP",
+    page_title="EnergyPlus HeatPumpToWaterAir:EquationFit",
     layout="wide"
 )
 
@@ -36,7 +36,7 @@ with c2:
     C3 = st.number_input('Cooling Power Consumption Coefficients 3', value = 3.16734236, format="%f")
     C4 = st.number_input('Cooling Power Consumption Coefficients 4', value = 0.10244637, format="%f")
     C5 = st.number_input('Cooling Power Consumption Coefficients 5', value = -0.038132556, format="%f")
-    
+
 with c3:    
     # Heating Capacity Coefficients
     E1 = st.number_input('Heating Capacity Coefficients 1', value = -5.50102734, format="%f")
@@ -53,9 +53,9 @@ with c3:
 
 with c4:
     # Temperatures and flows from the simulation
+    Entering_air_dry_bulb_temperature = st.number_input('Entering_air_dry_bulb_temperature', value = 33.00, step=0.1)
     Entering_air_wet_bulb_temperature = st.number_input('Entering_air_wet_bulb_temperature', value = 20.54, step=0.1)
     Entering_Water_Temperature = st.number_input('Entering_Water_Temperature', value = 36.26, step=0.1)
-    Entering_air_dry_bulb_temperature = st.number_input('Entering_air_dry_bulb_temperature', value = 33.00, step=0.1)
     Air_volume_flow_rate = st.number_input('Air_volume_flow_rate', value = 0.853, step=0.001, format="%f")
     Water_volumetric_flow_rate = st.number_input('Water_volumetric_flow_rate', value = 0.00165, step=0.001, format="%f")
 
@@ -87,8 +87,10 @@ with c4:
     st.write('Sensible_cooling_capacity ', round(Sensible_cooling_capacity))
     st.write('Cooling_power_consumption ', round(Cooling_power_consumption))
     st.write('Cooling COP', round(Cooling_COP,3))
+    st.write('')
     st.write('Total_heating_capacity ', round(Total_heating_capacity))
     st.write('Heating_power_consumption ', round(Heating_power_consumption))
     st.write('Heating_COP', round(Heating_COP,3))
+    st.write('')
     st.write('Total_cooling_heat_rejection ', round(Total_cooling_heat_rejection))
     st.write('Total_heating_heat_absoprtion ', round(Total_heating_heat_absoprtion))
