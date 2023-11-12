@@ -7,7 +7,7 @@ with c1:
     st.write("#### Embedded Radiant System")
     system_type = st.select_slider(
         label="System type [A, B, C, D, H, I, J]",
-        options=["A", "B", "C", "D", "H", "I", "J"],)
+        options=["A", "B", "C", "D", "H", "I", "J"])
     placement = st.radio("Location", options=["floor", "wall", "ceiling"], horizontal=True)
     purpose = st.radio("Purpose", options=["heating", "cooling"], horizontal=True)
     case_of_application = placement + " " + purpose
@@ -45,33 +45,33 @@ with c2:
         psi = st.number_input("Volume ratio of the fixing inserts in the screed [-]", 
         value=0.05, step=0.01, format="%f")
         k_W = st.number_input("Thermal conductivity of the fixing inserts [W/mK]", 
-        value=0.50, step=0.05, format="%f")
+        value=0.22, step=0.05, format="%f")
     else:
         psi = 0
         k_W = 0
 
     if system_type != "D":
         st.write("#### Sheathing")
-        d_M = st.number_input("External diameter of sheathing [mm]", 
-                                value=16.0, step=0.1, format="%f") / 1000
+        d_M = external_diameter + st.number_input("Thickness of sheathing [mm]", 
+                                                  value=0.0, step=0.1, format="%f") / 1000
         k_M = st.number_input("Sheathing material conductivity [W/mK]", 
                                 value = 1.0, step=0.5, format="%f")
     else:
         d_M = 0
         k_M = 0
 
-    if system_type != "B":
-        s_WL = 0
-        k_WL = 0 
-        L_WL = 0
-    else:
+    if system_type == "B":
         st.write("#### Heat diffusion device")
         s_WL = st.number_input("Thickness of the heat conducting material [mm]", 
-        value=2.0, step=0.1, format="%f") / 1000
+        value=1.0, step=0.1, format="%f") / 1000
         k_WL = st.number_input("Thermal conductivity of the heat conducting material [W/mK]",
         value=50.0, step=5.0, format="%f")
         L_WL = st.number_input("Width of heat conducting device [cm]", 
         value=10.0, step=5.0, format="%f") / 100
+    else:
+        s_WL = 0
+        k_WL = 0 
+        L_WL = 0
 
 
 with c3:
