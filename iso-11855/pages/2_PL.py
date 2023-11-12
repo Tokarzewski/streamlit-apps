@@ -20,10 +20,10 @@ with c1:
     eng_case_of_application = " ".join([dict_pl_to_eng.get(pl_word) for pl_word in [pl_placement, pl_purpose]])
 
     st.write("#### Warstwa wykończeniowa")
-    s_u = st.number_input("Grubość warstwy ponad rurą [mm]", 
-                        value=45, step=1, format="%i") / 1000
     R_k_B = st.number_input("Opór cieplny warstwy wykończeniowej [m2K/W]", 
                         value=0.10, step=0.05, format="%f")
+    s_u = st.number_input("Grubość jastrychu nad rurą [mm]", 
+                        value=45, step=1, format="%i") / 1000
     k_E = st.number_input("Współczynnik przewodności cieplnej jastrychu [W/mK]", 
                         value=1.8, step=0.1, format="%f")
 

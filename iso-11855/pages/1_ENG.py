@@ -13,10 +13,10 @@ with c1:
     case_of_application = placement + " " + purpose
 
     st.write("#### Covering")
-    s_u = st.number_input("Thickness of layer above the pipe [mm]", 
-                        value=45, step=1, format="%i") / 1000
     R_k_B = st.number_input("Thermal resistance of the floor covering [m2K/W]", 
                         value=0.10, step=0.05, format="%f")
+    s_u = st.number_input("Thickness of layer above the pipe [mm]", 
+                        value=45, step=1, format="%i") / 1000
     k_E = st.number_input("Thermal conductivity of screed [W/mK]", 
                         value=1.8, step=0.1, format="%f")
 
