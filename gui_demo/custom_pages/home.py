@@ -3,7 +3,7 @@
 import streamlit as st
 
 
-def render(show_code: bool = False):
+def render():
     """Render the home page."""
     st.markdown(
         '<div class="custom-header"><h1>🚀 Streamlit Feature Demo</h1>'
@@ -42,8 +42,4 @@ def render(show_code: bool = False):
 
     Use the sidebar to navigate between different feature categories!
     """
-    )
-
-    st.info(
-        "💡 **Tip**: Toggle 'Show Code Examples' in the sidebar to see the code behind each feature!"
     )

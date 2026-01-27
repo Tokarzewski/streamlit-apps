@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 
-def render(show_code: bool = False, theme: str = "Light"):
+def render():
     """Render the Styling & Theming page."""
     st.header("🎨 Styling & Theming")
 
@@ -51,28 +51,6 @@ def render(show_code: bool = False, theme: str = "Light"):
         st.markdown('<h2 class="gradient-text">Animated Gradient Text Effect!</h2>', unsafe_allow_html=True)
 
         st.divider()
-
-        if show_code:
-            with st.expander("View CSS Code"):
-                st.code("""
-                /* Feature Card */
-                .feature-card {
-                    background-color: #f0f2f6;
-                    padding: 1.5rem;
-                    border-radius: 10px;
-                    border-left: 5px solid #FF4B4B;
-                    margin: 1rem 0;
-                }
-
-                /* Animated Gradient Text */
-                .gradient-text {
-                    background: linear-gradient(90deg, #FF4B4B, #FF6B6B, #FFD93D, #6BCB77);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-size: 300% 300%;
-                    animation: gradient 3s ease infinite;
-                }
-                """, language="css")
 
     with tab2:
         st.subheader("Markdown with HTML Styling")

@@ -4,7 +4,7 @@ import streamlit as st
 import time
 
 
-def render(show_code: bool = False):
+def render():
     """Render the Utilities page."""
     st.header("🔧 Utilities")
 

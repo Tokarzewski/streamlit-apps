@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 
-def render(show_code: bool = False):
+def render():
     """Render the Layout & Containers page."""
     st.header("📐 Layout & Containers")
 
@@ -60,25 +60,6 @@ def render(show_code: bool = False):
             with inner_col2:
                 st.metric("Metric D", "400")
 
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-# Equal columns
-col1, col2, col3 = st.columns(3)
-
-# Custom width columns (ratio 1:2:1)
-col1, col2, col3 = st.columns([1, 2, 1])
-
-# Nested columns
-outer1, outer2 = st.columns(2)
-with outer1:
-    inner1, inner2 = st.columns(2)
-    with inner1:
-        st.metric("A", "100")
-                """
-                )
-
     with tab2:
         st.subheader("Tabs")
 
@@ -111,24 +92,6 @@ with outer1:
             st.write("This expander starts expanded!")
             st.code("print('Hello from inside an expander!')")
 
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-# Tabs
-tab1, tab2, tab3 = st.tabs(["📊 Data", "📈 Chart", "⚙️ Settings"])
-with tab1:
-    st.write("Tab 1 content")
-
-# Expanders
-with st.expander("Click to expand"):
-    st.write("Hidden content")
-
-with st.expander("Starts expanded", expanded=True):
-    st.write("Visible by default")
-                """
-                )
-
     with tab3:
         st.subheader("Container")
 
@@ -159,25 +122,6 @@ with st.expander("Starts expanded", expanded=True):
             placeholder.success("Content updated dynamically!")
         else:
             placeholder.info("Click the button to update this placeholder")
-
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-# Basic container
-with st.container():
-    st.write("Grouped content")
-
-# Container with border
-with st.container(border=True):
-    st.write("Bordered content")
-
-# Empty placeholder for dynamic content
-placeholder = st.empty()
-placeholder.info("Initial content")
-# Later: placeholder.success("Updated!")
-                """
-                )
 
     with tab4:
         st.subheader("Popover")

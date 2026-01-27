@@ -9,7 +9,7 @@ import altair as alt
 import matplotlib.pyplot as plt
 
 
-def render(show_code: bool = False):
+def render():
     """Render the Charts & Visualizations page."""
     st.header("📈 Charts & Visualizations")
 
@@ -58,24 +58,6 @@ def render(show_code: bool = False):
                 }
             )
             st.scatter_chart(scatter_df, x="x", y="y", size="size")
-
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-            # Line chart
-            st.line_chart(data[['sales', 'revenue']])
-
-            # Area chart
-            st.area_chart(data[['sales', 'visitors']])
-
-            # Bar chart
-            st.bar_chart(data['sales'])
-
-            # Scatter chart
-            st.scatter_chart(df, x='x', y='y', size='size')
-                """
-                )
 
     with tab2:
         st.subheader("Plotly Charts")
@@ -140,32 +122,6 @@ def render(show_code: bool = False):
         fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y)])
         fig.update_layout(title="3D Surface Plot", height=500)
         st.plotly_chart(fig, use_container_width=True)
-
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-import plotly.express as px
-import plotly.graph_objects as go
-
-# Line chart
-fig = px.line(data, x='date', y=['sales', 'revenue'])
-st.plotly_chart(fig, use_container_width=True)
-
-# Pie chart
-fig = px.pie(data, values='Values', names='Category')
-st.plotly_chart(fig)
-
-# Bar chart with color scale
-fig = px.bar(data, x='date', y='sales', color='sales',
-             color_continuous_scale='Viridis')
-st.plotly_chart(fig)
-
-# 3D Surface
-fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y)])
-st.plotly_chart(fig)
-                """
-                )
 
     with tab3:
         st.subheader("Altair Charts")

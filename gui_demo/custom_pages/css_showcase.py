@@ -3,7 +3,7 @@
 import streamlit as st
 
 
-def render(show_code: bool = False):
+def render():
     """Render the CSS Showcase page."""
     st.header("✨ CSS Showcase")
     st.markdown("Explore advanced CSS effects and animations possible in Streamlit!")
@@ -32,49 +32,6 @@ def render(show_code: bool = False):
 
     with tab5:
         _render_advanced_effects()
-
-    if show_code:
-        st.divider()
-        with st.expander("View CSS Code Examples"):
-            st.code(
-                """
-                /* Bouncing Animation */
-                @keyframes bounce {
-                    from { transform: translateY(0); }
-                    to { transform: translateY(-30px); }
-                }
-                .bounce { animation: bounce 0.6s ease-in-out infinite alternate; }
-
-                /* Glassmorphism */
-                .glass {
-                    background: rgba(255, 255, 255, 0.15);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    border-radius: 16px;
-                }
-
-                /* Neon Glow */
-                .neon {
-                    text-shadow: 0 0 10px #fff, 0 0 40px #ff00de;
-                }
-
-                /* 3D Flip Card */
-                .flip-card { transform-style: preserve-3d; transition: transform 0.8s; }
-                .flip-card:hover { transform: rotateY(180deg); }
-
-                /* Morphing Shape */
-                @keyframes morph {
-                    0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-                    50% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
-                }
-
-                /* Neumorphism */
-                .neumorphic {
-                    box-shadow: 9px 9px 16px #b8bec7, -9px -9px 16px #ffffff;
-                }
-            """,
-                language="css",
-            )
 
 
 def _render_animations():

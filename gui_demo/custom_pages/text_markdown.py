@@ -2,7 +2,7 @@
 import streamlit as st
 
 
-def render(show_code: bool = False):
+def render():
     """Render the Text & Markdown page."""
     st.header("📝 Text & Markdown Elements")
 
@@ -14,15 +14,6 @@ def render(show_code: bool = False):
         st.header("This is st.header()")
         st.subheader("This is st.subheader()")
         st.caption("This is st.caption() - small text")
-
-        if show_code:
-            with st.expander("View Code"):
-                st.code("""
-                st.title("This is st.title()")
-                st.header("This is st.header()")
-                st.subheader("This is st.subheader()")
-                st.caption("This is st.caption()")
-                """)
 
         st.divider()
 

@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import date, time as dt_time, datetime
 
 
-def render(show_code: bool = False):
+def render():
     """Render the Input Widgets page."""
     st.header("🎛️ Input Widgets")
 
@@ -82,28 +82,6 @@ def render(show_code: bool = False):
             )
             st.write(f"Selected color: {color}")
 
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-# Button
-if st.button("Click me", type="primary"):
-    st.success("Clicked!")
-
-# Checkbox and Toggle
-agree = st.checkbox("I agree")
-on = st.toggle("Enable feature")
-
-# Radio buttons
-choice = st.radio("Pick one:", ["A", "B", "C"], horizontal=True)
-
-# Select widgets
-option = st.selectbox("Choose:", ["Red", "Green", "Blue"])
-options = st.multiselect("Choose many:", ["A", "B", "C"], default=["A"])
-color = st.select_slider("Color:", options=["red", "yellow", "green"])
-                """
-                )
-
     with tab2:
         st.subheader("Sliders")
 
@@ -164,26 +142,6 @@ color = st.select_slider("Color:", options=["red", "yellow", "green"])
                 unsafe_allow_html=True,
             )
 
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-# Sliders
-age = st.slider("Age:", 0, 100, 25)
-values = st.slider("Range:", 0.0, 100.0, (25.0, 75.0))
-salary = st.slider("Salary:", 30000, 150000, format="$%d")
-
-# Text inputs
-name = st.text_input("Name:", placeholder="John Doe")
-password = st.text_input("Password:", type="password")
-number = st.number_input("Number:", min_value=0, max_value=100)
-message = st.text_area("Message:", height=100)
-
-# Color picker
-color = st.color_picker("Color:", "#FF4B4B")
-                """
-                )
-
     with tab3:
         st.subheader("Date & Time Inputs")
 
@@ -211,27 +169,6 @@ color = st.color_picker("Color:", "#FF4B4B")
             st.write(
                 f"Current datetime: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
             )
-
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-from datetime import date, time
-
-# Date input
-d = st.date_input("Select date:", date.today())
-
-# Date range
-date_range = st.date_input(
-    "Date range:",
-    (date(2024, 1, 1), date(2024, 12, 31)),
-    format="MM/DD/YYYY"
-)
-
-# Time input
-t = st.time_input("Select time:", time(12, 0))
-                """
-                )
 
     with tab4:
         st.subheader("File Uploaders")
@@ -263,13 +200,3 @@ t = st.time_input("Select time:", time(12, 0))
 
         st.subheader("Camera Input")
         st.info("📷 Camera input is available for capturing photos directly!")
-
-        if show_code:
-            st.code(
-                """
-# Camera input example
-photo = st.camera_input("Take a picture")
-if photo:
-    st.image(photo)
-            """
-            )

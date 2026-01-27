@@ -5,26 +5,26 @@ import time
 from datetime import date
 
 
-def render(show_code: bool = False):
+def render():
     """Render the Advanced Features page."""
     st.header("⚡ Advanced Features")
 
     tab1, tab2, tab3, tab4 = st.tabs(["Session State", "Forms", "Caching", "Callbacks"])
 
     with tab1:
-        _render_session_state(show_code)
+        _render_session_state()
 
     with tab2:
         _render_forms()
 
     with tab3:
-        _render_caching(show_code)
+        _render_caching()
 
     with tab4:
         _render_callbacks()
 
 
-def _render_session_state(show_code: bool):
+def _render_session_state():
     """Render session state tab."""
     st.subheader("Session State")
 
@@ -76,21 +76,6 @@ def _render_session_state(show_code: bool):
             st.session_state.cart_items = []
             st.rerun()
 
-    if show_code:
-        with st.expander("View Code"):
-            st.code(
-                """
-# Initialize session state
-if 'counter' not in st.session_state:
-    st.session_state.counter = 0
-
-# Update state
-if st.button("Increment"):
-    st.session_state.counter += 1
-    st.rerun()
-            """
-            )
-
 
 def _render_forms():
     """Render forms tab."""
@@ -141,7 +126,7 @@ def _render_forms():
                 st.info(f"Searching for '{query}' in {category}...")
 
 
-def _render_caching(show_code: bool):
+def _render_caching():
     """Render caching tab."""
     st.subheader("Caching")
 
@@ -176,21 +161,6 @@ def _render_caching(show_code: bool):
     if st.button("Load Model"):
         model = load_model()
         st.json(model)
-
-    if show_code:
-        with st.expander("View Code"):
-            st.code(
-                """
-@st.cache_data
-def expensive_computation(n):
-    time.sleep(2)  # Simulate delay
-    return [i ** 2 for i in range(n)]
-
-@st.cache_resource
-def load_model():
-    return load_heavy_model()
-            """
-            )
 
 
 def _render_callbacks():

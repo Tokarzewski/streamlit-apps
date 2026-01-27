@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 
 
-def render(show_code: bool = False):
+def render():
     """Render the Data Display page."""
     st.header("📊 Data Display Elements")
 
@@ -49,30 +49,6 @@ def render(show_code: bool = False):
         )
         st.dataframe(styled_df)
 
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-                # Interactive DataFrame with column config
-                st.dataframe(
-                    df,
-                    column_config={
-                        "Name": st.column_config.TextColumn("Employee Name"),
-                        "Salary": st.column_config.NumberColumn("Salary ($)", format="$%d"),
-                        "Rating": st.column_config.ProgressColumn("Rating", min_value=0, max_value=5)
-                    },
-                    hide_index=True
-                )
-
-                # Static table
-                st.table(df.head(3))
-
-                # Styled DataFrame
-                styled_df = df.style.highlight_max(subset=['Salary'], color='lightgreen')
-                st.dataframe(styled_df)
-                """
-                )
-
     with tab2:
         st.subheader("Metrics Display")
 
@@ -110,25 +86,6 @@ def render(show_code: bool = False):
                 </div>
                 """,
                     unsafe_allow_html=True,
-                )
-
-        if show_code:
-            with st.expander("View Code"):
-                st.code(
-                    """
-                # Basic metrics with delta
-                st.metric(label="Temperature", value="70°F", delta="1.2°F")
-                st.metric(label="Revenue", value="$12,500", delta="-$500", delta_color="inverse")
-
-                # Custom metric cards with HTML/CSS
-                st.markdown('''
-                <div class="metric-card">
-                    <h3>📈</h3>
-                    <h2>$45,231</h2>
-                    <p>Total Sales</p>
-                </div>
-                ''', unsafe_allow_html=True)
-                """
                 )
 
     with tab3:
