@@ -1,6 +1,6 @@
 from math import exp, log, sqrt, prod, e, pi
 import numpy as np
-from scipy.interpolate import CubicSpline, interp2d, interpn
+from scipy.interpolate import CubicSpline, RectBivariateSpline, interpn
 
 
 def q1(t_S_m, t_i):
@@ -223,8 +223,8 @@ def a_U1(R_k_B, W):
         [1.0395, 1.031, 1.024, 1.021],
         [1.03, 1.0221, 1.0181, 1.015],
     ]
-    cs = interp2d(x_R_k_B, y_W, z_a_U, kind="cubic")
-    return float(cs(R_k_B, W))
+    cs = RectBivariateSpline(x_R_k_B, y_W, np.array(z_a_U).T, kx=3, ky=3)
+    return float(cs.ev(R_k_B, W))
 
 
 def a_D(R_k_B, W):
@@ -240,8 +240,8 @@ def a_D(R_k_B, W):
         [1.053, 1.049, 1.044, 1.039],
         [1.056, 1.051, 1.046, 1.042],
     ]
-    cs = interp2d(x_R_k_B, y_W, z_a_D, kind="cubic")
-    return float(cs(R_k_B, W))
+    cs = RectBivariateSpline(x_R_k_B, y_W, np.array(z_a_D).T, kx=3, ky=3)
+    return float(cs.ev(R_k_B, W))
 
 
 def B_G1(s_u, k_E, W):
@@ -257,8 +257,8 @@ def B_G1(s_u, k_E, W):
         [20.5, 26.8, 31.6, 36.4, 51.5, 47.5, 57.5, 65.3, 72.4],
         [11.5, 13.7, 15.5, 18.2, 21.5, 27.5, 40.0, 49.1, 58.3],
     ]
-    cs = interp2d(x_s_u_k_E, y_W, z_B_G, kind="cubic")
-    return float(cs(s_u / k_E, W))
+    cs = RectBivariateSpline(x_s_u_k_E, y_W, np.array(z_B_G).T, kx=3, ky=3)
+    return float(cs.ev(s_u / k_E, W))
 
 
 def B_G2(s_u, W):
@@ -287,8 +287,8 @@ def n_G1(s_u, k_E, W):
         [0.322, 0.321, 0.321, 0.310, 0.293, 0.260, 0.187, 0.148, 0.115],
         [0.422, 0.421, 0.421, 0.405, 0.385, 0.325, 0.230, 0.183, 0.142],
     ]
-    cs = interp2d(x_s_u_k_E, y_W, z_n_G, kind="cubic")
-    return float(cs(s_u / k_E, W))
+    cs = RectBivariateSpline(x_s_u_k_E, y_W, np.array(z_n_G).T, kx=3, ky=3)
+    return float(cs.ev(s_u / k_E, W))
 
 
 def n_G2(s_u, W):
@@ -430,8 +430,8 @@ def a_WL3(K_WL, W, D):
             [0.815, 0.86, 0.9, 0.93, 0.97, 1.0],
             [0.81, 0.86, 0.9, 0.93, 0.97, 1.0],
         ]
-        cs = interp2d(x_K_WL, y_W, z_a_WL, kind="cubic")
-        return float(cs(K_WL, W))
+        cs = RectBivariateSpline(x_K_WL, y_W, np.array(z_a_WL).T, kx=3, ky=3)
+        return float(cs.ev(K_WL, W))
 
 
 def a_K(W):
@@ -461,8 +461,8 @@ def B_G3(K_WL, W):
         [100, 100, 99.8, 97.5, 92.5, 89.0, 80.0, 67.3, 50.5],
         [100, 100, 100, 98.6, 94.8, 91.7, 83.0, 71.0, 53.4],
     ]
-    cs = interp2d(x_W, y_K_WL, z_B_G, kind="cubic")
-    return float(cs(W, K_WL))
+    cs = RectBivariateSpline(x_W, y_K_WL, np.array(z_B_G).T, kx=3, ky=3)
+    return float(cs.ev(W, K_WL))
 
 
 def n_G3(K_WL, W):
@@ -485,8 +485,8 @@ def n_G3(K_WL, W):
         [0.0, 0.0, 0.002, 0.012, 0.022, 0.029, 0.047, 0.063, 0.080],
         [0.0, 0.0, 0.0, 0.009, 0.02, 0.025, 0.04, 0.055, 0.07],
     ]
-    cs = interp2d(x_W, y_K_WL, z_n_G, kind="cubic")
-    return float(cs(W, K_WL))
+    cs = RectBivariateSpline(x_W, y_K_WL, np.array(z_n_G).T, kx=3, ky=3)
+    return float(cs.ev(W, K_WL))
 
 
 def alfa(case_of_application="floor heating"):
