@@ -133,8 +133,8 @@ def q_G2(q_G_0375, W, f_G):
     return q_G_0375 * 0.375 / W * f_G
 
 
-def deltat_H_G(t_H_G_0375, f_G):
-    return t_H_G_0375 * f_G
+"""def deltat_H_G(t_H_G_0375, f_G):
+    return t_H_G_0375 * f_G"""
 
 
 def f_G(s_u, W, q_G_max, q_G_0375):
@@ -396,7 +396,8 @@ def a_WL2(K_WL, W, D):
     points = (x_K_WL, y_W, z_D)
     point = np.array([K_WL, W, D])
     # xyz change linear interpolation to quadratic spline
-    return float(interpn(points, a_WL, point, method="linear", bounds_error=False))
+    result = interpn(points, a_WL, point, method="linear", bounds_error=False)
+    return float(result) if np.isscalar(result) else float(result.item())
 
 
 def a_WL_inf(W):

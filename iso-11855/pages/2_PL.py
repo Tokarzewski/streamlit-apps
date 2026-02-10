@@ -1,5 +1,43 @@
 import streamlit as st
 from iso_11855.methodology import *
+from language_constants import LANGUAGES, LANGUAGE_PAGES, DEFAULT_LANGUAGE
+
+st.set_page_config(layout="wide")
+
+# Initialize language in session state
+if "language" not in st.session_state:
+    st.session_state.language = DEFAULT_LANGUAGE
+
+# Language selector in sidebar
+st.sidebar.header("🌐 Język")
+language_list = list(LANGUAGES.values())
+language_codes = list(LANGUAGES.keys())
+current_index = language_codes.index(st.session_state.language)
+
+selected_lang_display = st.sidebar.selectbox(
+    "Wybierz język",
+    options=language_list,
+    index=current_index,
+    key="language_selector",
+    label_visibility="collapsed"
+)
+selected_code = language_codes[language_list.index(selected_lang_display)]
+st.session_state.language = selected_code
+
+# Navigate to selected language page
+if st.session_state.language != "pl":
+    st.switch_page(LANGUAGE_PAGES[st.session_state.language])
+
+# Sidebar content
+st.sidebar.markdown("---")
+st.sidebar.write("# Przykładowa aplikacja ISO 11855")
+st.sidebar.markdown(
+    """
+    Standard ISO 11855 ma zastosowanie do systemów ogrzewania i chłodzenia
+    powierzchniowego zasilanego wodą w budynkach mieszkalnych, komercyjnych
+    i przemysłowych.
+    """
+)
 
 c1, c2, c3 = st.columns(3)
 
