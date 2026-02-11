@@ -5,7 +5,7 @@ LANGUAGES = {
 }
 
 # Default language
-DEFAULT_LANGUAGE = "en"
+DEFAULT_LANGUAGE = "pl"
 
 # Mapping language codes to page files
 LANGUAGE_PAGES = {
